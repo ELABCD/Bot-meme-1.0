@@ -1,6 +1,7 @@
 import os
 import random
 import discord
+import requests
 
 # Configuración del cliente
 intents = discord.Intents.default()
@@ -20,7 +21,7 @@ async def on_message(message):
     if message.content == '/memeprog':
         try:
             # Ruta completa a la carpeta de imágenes
-            image_folder = 'C:/Users/User/OneDrive/Escritorio/Proyecto/Memes-Programacion-1.0'
+            image_folder = 'C:/User/OneDrive/Escritorio/Proyecto/Memes-Programacion-1.0'
             
             # Obtener todos los archivos de la carpeta
             image_files = os.listdir(image_folder)
@@ -45,5 +46,19 @@ async def on_message(message):
 
         except Exception as e:
             await message.channel.send(f"Ocurrió un error: {e}")
+
+    elif message.content == '/duck':
+        try:
+            # Obtener URL de imagen de pato
+            image_url = get_duck_image_url()
+            await message.channel.send(image_url)
+        except Exception as e:
+            await message.channel.send(f"Ocurrió un error: {e}")
+
+def get_duck_image_url():
+    url = 'https://random-d.uk/api/random'
+    res = requests.get(url)
+    data = res.json()
+    return data['url']
 
 client.run('TOKEN')
